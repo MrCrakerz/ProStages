@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-6.0
----
-
- * Remove `SetUpTearDownTrait`
-
 5.3
 ---
 

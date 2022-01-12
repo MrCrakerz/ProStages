@@ -11,6 +11,7 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\UnitOfWork;
 
+use function array_walk;
 use function assert;
 
 /**

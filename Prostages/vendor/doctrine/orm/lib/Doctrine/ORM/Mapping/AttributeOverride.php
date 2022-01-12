@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Mapping;
 
+use Attribute;
+
 /**
  * This annotation is used to override the mapping of a entity property.
  *
  * @Annotation
- * @NamedArgumentConstructor
  * @Target("ANNOTATION")
  */
+#[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class AttributeOverride implements Annotation
 {
     /**
@@ -26,10 +28,4 @@ final class AttributeOverride implements Annotation
      * @var \Doctrine\ORM\Mapping\Column
      */
     public $column;
-
-    public function __construct(string $name, Column $column)
-    {
-        $this->name   = $name;
-        $this->column = $column;
-    }
 }

@@ -25,7 +25,7 @@ use function usort;
 
 /**
  * @psalm-type QueryType = array{
- *    executionMS: float,
+ *    executionMS: int,
  *    explainable: bool,
  *    sql: string,
  *    params: ?array<array-key, mixed>,
@@ -290,7 +290,7 @@ class DoctrineDataCollector extends BaseCollector
         return $this->groupedQueries;
     }
 
-    private function executionTimePercentage(float $executionTimeMS, float $totalExecutionTimeMS): float
+    private function executionTimePercentage(int $executionTimeMS, int $totalExecutionTimeMS): float
     {
         if (! $totalExecutionTimeMS) {
             return 0;

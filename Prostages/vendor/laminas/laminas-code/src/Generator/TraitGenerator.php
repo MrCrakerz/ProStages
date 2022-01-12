@@ -68,7 +68,7 @@ class TraitGenerator extends ClassGenerator
      * @configkey methods
      * @throws Exception\InvalidArgumentException
      * @param  array $array
-     * @return static
+     * @return TraitGenerator
      */
     public static function fromArray(array $array)
     {
@@ -115,7 +115,7 @@ class TraitGenerator extends ClassGenerator
 
     /**
      * @param int $flag
-     * @return static
+     * @return self
      */
     public function addFlag($flag)
     {
@@ -124,7 +124,7 @@ class TraitGenerator extends ClassGenerator
 
     /**
      * @param int $flag
-     * @return static
+     * @return self
      */
     public function removeFlag($flag)
     {
@@ -141,7 +141,7 @@ class TraitGenerator extends ClassGenerator
 
     /**
      * @param ?string $extendedClass
-     * @return static
+     * @return self
      */
     public function setExtendedClass($extendedClass)
     {

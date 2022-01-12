@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony DoctrineBundle",
     "keywords": ["DBAL", "ORM", "Database", "Persistence"],
-    "homepage": "https://www.doctrine-project.org",
+    "homepage": "http://www.doctrine-project.org",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
@@ -17,11 +17,11 @@
         },
         {
             "name": "Symfony Community",
-            "homepage": "https://symfony.com/contributors"
+            "homepage": "http://symfony.com/contributors"
         },
         {
             "name": "Doctrine Project",
-            "homepage": "https://www.doctrine-project.org/"
+            "homepage": "http://www.doctrine-project.org/"
         }
     ],
     "require": {
@@ -34,15 +34,15 @@
         "symfony/cache": "^4.3.3|^5.0|^6.0",
         "symfony/config": "^4.4.3|^5.0|^6.0",
         "symfony/console": "^3.4.30|^4.3.3|^5.0|^6.0",
-        "symfony/dependency-injection": "^4.4.18|^5.0|^6.0",
-        "symfony/deprecation-contracts": "^2.1|^3",
+        "symfony/dependency-injection": "^4.3.3|^5.0|^6.0",
+        "symfony/deprecation-contracts": "^2.1",
         "symfony/doctrine-bridge": "^4.4.22|^5.2.7|^6.0",
         "symfony/framework-bundle": "^3.4.30|^4.3.3|^5.0|^6.0",
-        "symfony/service-contracts": "^1.1.1|^2.0|^3"
+        "symfony/service-contracts": "^1.1.1|^2.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0",
-        "doctrine/orm": "^2.9 || ^3.0",
+        "doctrine/orm": "^2.9",
         "friendsofphp/proxy-manager-lts": "^1.0",
         "phpunit/phpunit": "^7.5 || ^8.0 || ^9.3 || ^10.0",
         "psalm/plugin-phpunit": "^0.16.1",
@@ -59,11 +59,7 @@
         "vimeo/psalm": "^4.7"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "composer/package-versions-deprecated": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+        "sort-packages": true
     },
     "conflict": {
         "doctrine/orm": "<2.9",

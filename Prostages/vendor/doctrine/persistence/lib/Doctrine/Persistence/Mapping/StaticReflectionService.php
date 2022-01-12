@@ -23,26 +23,25 @@ class StaticReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getClassShortName($class)
+    public function getClassShortName($className)
     {
-        $nsSeparatorLastPosition = strrpos($class, '\\');
+        $nsSeparatorLastPosition = strrpos($className, '\\');
 
         if ($nsSeparatorLastPosition !== false) {
-            $class = substr($class, $nsSeparatorLastPosition + 1);
+            $className = substr($className, $nsSeparatorLastPosition + 1);
         }
 
-        return $class;
+        return $className;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getClassNamespace($class)
+    public function getClassNamespace($className)
     {
         $namespace = '';
-
-        if (strpos($class, '\\') !== false) {
-            $namespace = strrev(substr(strrev($class), (int) strpos(strrev($class), '\\') + 1));
+        if (strpos($className, '\\') !== false) {
+            $namespace = strrev(substr(strrev($className), (int) strpos(strrev($className), '\\') + 1));
         }
 
         return $namespace;

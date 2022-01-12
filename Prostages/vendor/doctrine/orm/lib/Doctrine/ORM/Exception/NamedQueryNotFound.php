@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Exception;
 
+use LogicException;
+
 use function sprintf;
 
 final class NamedQueryNotFound extends ORMException implements ConfigurationException

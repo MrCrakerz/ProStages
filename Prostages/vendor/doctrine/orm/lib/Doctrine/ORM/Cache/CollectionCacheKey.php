@@ -15,19 +15,22 @@ use function strtolower;
 class CollectionCacheKey extends CacheKey
 {
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var array<string, mixed> The owner entity identifier
      */
     public $ownerIdentifier;
 
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var string The owner entity class
      */
     public $entityClass;
 
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var string The association name
      */
     public $association;

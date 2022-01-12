@@ -28,7 +28,7 @@ use function is_array;
 use function reset;
 
 /**
- * Appends a condition "id IN (:foo_1, :foo_2)" to the whereClause of the AST.
+ * Replaces the whereClause of the AST with a WHERE id IN (:foo_1, :foo_2) equivalent.
  */
 class WhereInWalker extends TreeWalkerAdapter
 {
@@ -43,7 +43,9 @@ class WhereInWalker extends TreeWalkerAdapter
     public const PAGINATOR_ID_ALIAS = 'dpid';
 
     /**
-     * Appends a condition equivalent to "WHERE IN (:dpid_1, :dpid_2, ...)" to the whereClause of the AST.
+     * Replaces the whereClause in the AST.
+     *
+     * Generates a clause equivalent to WHERE IN (:dpid_1, :dpid_2, ...)
      *
      * The parameter namespace (dpid) is defined by
      * the PAGINATOR_ID_ALIAS

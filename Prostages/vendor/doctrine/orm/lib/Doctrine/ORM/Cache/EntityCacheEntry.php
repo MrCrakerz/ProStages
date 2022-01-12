@@ -14,13 +14,15 @@ use function array_map;
 class EntityCacheEntry implements CacheEntry
 {
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var array<string,mixed> The entity map data
      */
     public $data;
 
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var string The entity class name
      * @psalm-var class-string
      */

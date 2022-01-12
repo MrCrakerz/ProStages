@@ -15,26 +15,26 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Column implements Annotation
 {
-    /** @var string|null */
+    /** @var string */
     public $name;
 
     /** @var mixed */
     public $type;
 
-    /** @var int|null */
+    /** @var int */
     public $length;
 
     /**
      * The precision for a decimal (exact numeric) column (Applies only for decimal column).
      *
-     * @var int|null
+     * @var int
      */
     public $precision = 0;
 
     /**
      * The scale for a decimal (exact numeric) column (Applies only for decimal column).
      *
-     * @var int|null
+     * @var int
      */
     public $scale = 0;
 
@@ -44,32 +44,14 @@ final class Column implements Annotation
     /** @var bool */
     public $nullable = false;
 
-    /** @var bool */
-    public $insertable = true;
-
-    /** @var bool */
-    public $updatable = true;
-
-    /** @var class-string<\BackedEnum>|null */
-    public $enumType = null;
-
     /** @var array<string,mixed> */
     public $options = [];
 
-    /** @var string|null */
+    /** @var string */
     public $columnDefinition;
 
     /**
-     * @var string|null
-     * @psalm-var 'NEVER'|'INSERT'|'ALWAYS'|null
-     * @Enum({"NEVER", "INSERT", "ALWAYS"})
-     */
-    public $generated;
-
-    /**
-     * @param class-string<\BackedEnum>|null $enumType
-     * @param array<string,mixed>            $options
-     * @psalm-param 'NEVER'|'INSERT'|'ALWAYS'|null $generated
+     * @param array<string,mixed> $options
      */
     public function __construct(
         ?string $name = null,
@@ -79,12 +61,8 @@ final class Column implements Annotation
         ?int $scale = null,
         bool $unique = false,
         bool $nullable = false,
-        bool $insertable = true,
-        bool $updatable = true,
-        ?string $enumType = null,
         array $options = [],
-        ?string $columnDefinition = null,
-        ?string $generated = null
+        ?string $columnDefinition = null
     ) {
         $this->name             = $name;
         $this->type             = $type;
@@ -93,11 +71,7 @@ final class Column implements Annotation
         $this->scale            = $scale;
         $this->unique           = $unique;
         $this->nullable         = $nullable;
-        $this->insertable       = $insertable;
-        $this->updatable        = $updatable;
-        $this->enumType         = $enumType;
         $this->options          = $options;
         $this->columnDefinition = $columnDefinition;
-        $this->generated        = $generated;
     }
 }

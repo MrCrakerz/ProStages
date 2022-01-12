@@ -15,16 +15,16 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class UniqueConstraint implements Annotation
 {
-    /** @var string|null */
+    /** @var string */
     public $name;
 
-    /** @var array<string>|null */
+    /** @var array<string> */
     public $columns;
 
-    /** @var array<string>|null */
+    /** @var array<string> */
     public $fields;
 
-    /** @var array<string,mixed>|null */
+    /** @var array<string,mixed> */
     public $options;
 
     /**

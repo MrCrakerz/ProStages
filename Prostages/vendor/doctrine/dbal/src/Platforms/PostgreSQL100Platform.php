@@ -13,7 +13,7 @@ use Doctrine\Deprecations\Deprecation;
 class PostgreSQL100Platform extends PostgreSQL94Platform
 {
     /**
-     * @deprecated Implement {@see createReservedKeywordsList()} instead.
+     * @deprecated Implement {@link createReservedKeywordsList()} instead.
      */
     protected function getReservedKeywordsClass(): string
     {

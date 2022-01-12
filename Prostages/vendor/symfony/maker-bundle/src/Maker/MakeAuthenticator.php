@@ -267,7 +267,7 @@ final class MakeAuthenticator extends AbstractMaker
                 $authenticatorClass,
                 sprintf('authenticator/%sEmptyAuthenticator.tpl.php', $this->useSecurity52 ? 'Security52' : ''),
                 [
-                    'provider_key_type_hint' => $this->getGuardProviderKeyTypeHint(),
+                    'provider_key_type_hint' => $this->providerKeyTypeHint(),
                     'use_legacy_passport_interface' => $this->shouldUseLegacyPassportInterface(),
                 ]
             );
@@ -291,7 +291,7 @@ final class MakeAuthenticator extends AbstractMaker
                 'username_field_var' => Str::asLowerCamelCase($userNameField),
                 'user_needs_encoder' => $this->userClassHasEncoder($securityData, $userClass),
                 'user_is_entity' => $this->doctrineHelper->isClassAMappedEntity($userClass),
-                'provider_key_type_hint' => $this->getGuardProviderKeyTypeHint(),
+                'provider_key_type_hint' => $this->providerKeyTypeHint(),
                 'use_legacy_passport_interface' => $this->shouldUseLegacyPassportInterface(),
             ]
         );
@@ -406,16 +406,8 @@ final class MakeAuthenticator extends AbstractMaker
         );
     }
 
-    /**
-     * Calculates the type-hint used for the $provider argument (string or nothing) for Guard.
-     */
-    private function getGuardProviderKeyTypeHint(): string
+    private function providerKeyTypeHint(): string
     {
-        // doesn't matter: this only applies to non-Guard authenticators
-        if (!class_exists(AbstractFormLoginAuthenticator::class)) {
-            return '';
-        }
-
         $reflectionMethod = new \ReflectionMethod(AbstractFormLoginAuthenticator::class, 'onAuthenticationSuccess');
         $type = $reflectionMethod->getParameters()[2]->getType();
 

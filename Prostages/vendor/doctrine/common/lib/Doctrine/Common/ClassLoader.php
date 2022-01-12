@@ -169,9 +169,10 @@ class ClassLoader
      * Loads the given class or interface.
      *
      * @param string $className The name of the class to load.
-     * @psalm-param class-string $className
      *
      * @return bool TRUE if the class has been successfully loaded, FALSE otherwise.
+     *
+     * @psalm-param class-string $className
      */
     public function loadClass($className)
     {
@@ -195,9 +196,10 @@ class ClassLoader
      * the given name.
      *
      * @param string $className The fully-qualified name of the class.
-     * @psalm-param class-string $className
      *
      * @return bool TRUE if this ClassLoader can load the class, FALSE otherwise.
+     *
+     * @psalm-param class-string $className
      */
     public function canLoadClass($className)
     {
@@ -233,9 +235,10 @@ class ClassLoader
      * these responsibilities.
      *
      * @param string $className The fully-qualified name of the class.
-     * @psalm-param class-string $className
      *
      * @return bool TRUE if the class exists as per the definition given above, FALSE otherwise.
+     *
+     * @psalm-param class-string $className
      */
     public static function classExists($className)
     {
@@ -247,9 +250,10 @@ class ClassLoader
      * for (and is able to load) the class with the given name.
      *
      * @param string $className The name of the class.
-     * @psalm-param class-string $className
      *
      * @return ClassLoader|null The <tt>ClassLoader</tt> for the class or NULL if no such <tt>ClassLoader</tt> exists.
+     *
+     * @psalm-param class-string $className
      */
     public static function getClassLoader($className)
     {

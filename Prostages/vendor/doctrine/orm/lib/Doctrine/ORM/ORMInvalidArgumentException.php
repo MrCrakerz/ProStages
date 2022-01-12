@@ -9,9 +9,10 @@ use InvalidArgumentException;
 
 use function array_map;
 use function count;
-use function get_debug_type;
+use function get_class;
 use function gettype;
 use function implode;
+use function is_object;
 use function method_exists;
 use function reset;
 use function spl_object_id;
@@ -217,7 +218,7 @@ class ORMInvalidArgumentException extends InvalidArgumentException
             $expectedType,
             $assoc['sourceEntity'],
             $assoc['fieldName'],
-            get_debug_type($actualValue)
+            is_object($actualValue) ? get_class($actualValue) : gettype($actualValue)
         ));
     }
 
@@ -230,7 +231,7 @@ class ORMInvalidArgumentException extends InvalidArgumentException
      */
     public static function invalidEntityName($entityName)
     {
-        return new self(sprintf('Entity name must be a string, %s given', get_debug_type($entityName)));
+        return new self(sprintf('Entity name must be a string, %s given', gettype($entityName)));
     }
 
     /**
@@ -240,7 +241,7 @@ class ORMInvalidArgumentException extends InvalidArgumentException
      */
     private static function objToStr($obj): string
     {
-        return method_exists($obj, '__toString') ? (string) $obj : get_debug_type($obj) . '@' . spl_object_id($obj);
+        return method_exists($obj, '__toString') ? (string) $obj : get_class($obj) . '@' . spl_object_id($obj);
     }
 
     /**

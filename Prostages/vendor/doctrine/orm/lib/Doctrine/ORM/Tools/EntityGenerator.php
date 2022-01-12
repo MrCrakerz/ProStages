@@ -1140,11 +1140,7 @@ public function __construct(<params>)
             return '';
         }
 
-        $discrColumn = $metadata->discriminatorColumn;
-        if ($discrColumn === null) {
-            return '';
-        }
-
+        $discrColumn      = $metadata->discriminatorColumn;
         $columnDefinition = 'name="' . $discrColumn['name']
             . '", type="' . $discrColumn['type']
             . '", length=' . $discrColumn['length'];

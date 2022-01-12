@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doctrine\ORM\Tools\Console\Command\ClearCache;
 
 use Doctrine\ORM\Cache;
+use Doctrine\ORM\Cache\Region\DefaultRegion;
 use Doctrine\ORM\Tools\Console\Command\AbstractEntityManagerCommand;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,6 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function get_class;
+use function gettype;
+use function is_object;
 use function sprintf;
 
 /**
@@ -84,8 +88,16 @@ EOT
         }
 
         if ($input->getOption('flush')) {
-            $cache->getCollectionCacheRegion($ownerClass, $assoc)
-                ->evictAll();
+            $collectionRegion = $cache->getCollectionCacheRegion($ownerClass, $assoc);
+
+            if (! $collectionRegion instanceof DefaultRegion) {
+                throw new InvalidArgumentException(sprintf(
+                    'The option "--flush" expects a "Doctrine\ORM\Cache\Region\DefaultRegion", but got "%s".',
+                    is_object($collectionRegion) ? get_class($collectionRegion) : gettype($collectionRegion)
+                ));
+            }
+
+            $collectionRegion->getCache()->flushAll();
 
             $ui->comment(
                 sprintf(

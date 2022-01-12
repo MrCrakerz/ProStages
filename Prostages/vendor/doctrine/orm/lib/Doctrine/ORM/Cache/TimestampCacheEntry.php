@@ -12,7 +12,8 @@ use function microtime;
 class TimestampCacheEntry implements CacheEntry
 {
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var float
      */
     public $time;

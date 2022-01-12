@@ -63,7 +63,6 @@ interface ObjectRepository
      * Returns the class name of the object managed by the repository.
      *
      * @return string
-     * @psalm-return class-string<T>
      */
     public function getClassName();
 }

@@ -13,8 +13,6 @@ use Throwable;
 /**
  * Command to ensure that Doctrine is properly configured for a production environment.
  *
- * @deprecated
- *
  * @link    www.doctrine-project.org
  */
 class EnsureProductionSettingsCommand extends AbstractEntityManagerCommand
@@ -39,7 +37,6 @@ class EnsureProductionSettingsCommand extends AbstractEntityManagerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $ui = new SymfonyStyle($input, $output);
-        $ui->warning('This console command has been deprecated and will be removed in a future version of Doctrine ORM.');
 
         $em = $this->getEntityManager($input);
 

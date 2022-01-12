@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Doctrine\ORM\Persisters\Entity;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\PersistentCollection;
@@ -55,7 +54,6 @@ interface EntityPersister
      * @param int|null         $limit
      * @param int|null         $offset
      * @param mixed[]|null     $orderBy
-     * @psalm-param LockMode::*|null $lockMode
      *
      * @return string
      */
@@ -187,7 +185,6 @@ interface EntityPersister
      * @psalm-param array<string, mixed>       $criteria
      * @psalm-param array<string, mixed>|null  $assoc
      * @psalm-param array<string, mixed>       $hints
-     * @psalm-param LockMode::*|null           $lockMode
      * @psalm-param array<string, string>|null $orderBy
      *
      * @return object|null The loaded and managed entity instance or NULL if the entity can not be found.
@@ -242,7 +239,6 @@ interface EntityPersister
      * @psalm-param array<string, mixed> $id The identifier of the entity as an
      *                                       associative array from column or
      *                                       field names to values.
-     * @psalm-param LockMode::*|null $lockMode
      *
      * @return void
      */
@@ -304,7 +300,6 @@ interface EntityPersister
      *
      * @param int $lockMode One of the Doctrine\DBAL\LockMode::* constants.
      * @psalm-param array<string, mixed> $criteria
-     * @psalm-param LockMode::* $lockMode
      *
      * @return void
      */

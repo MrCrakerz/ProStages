@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Query\AST;
 
+use Doctrine\ORM\Query\Expr\GroupBy;
+
 class GroupByClause extends Node
 {
     /** @var mixed[] */

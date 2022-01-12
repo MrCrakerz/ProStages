@@ -397,72 +397,12 @@ class AttributeDriver extends AnnotationDriver
             }
         }
 
-        // Evaluate AssociationOverrides attribute
-        if (isset($classAttributes[Mapping\AssociationOverrides::class])) {
-            $associationOverride = $classAttributes[Mapping\AssociationOverrides::class];
-
-            foreach ($associationOverride->overrides as $associationOverride) {
-                $override  = [];
-                $fieldName = $associationOverride->name;
-
-                // Check for JoinColumn/JoinColumns attributes
-                if ($associationOverride->joinColumns) {
-                    $joinColumns = [];
-
-                    foreach ($associationOverride->joinColumns as $joinColumn) {
-                        $joinColumns[] = $this->joinColumnToArray($joinColumn);
-                    }
-
-                    $override['joinColumns'] = $joinColumns;
-                }
-
-                if ($associationOverride->inverseJoinColumns) {
-                    $joinColumns = [];
-
-                    foreach ($associationOverride->inverseJoinColumns as $joinColumn) {
-                        $joinColumns[] = $this->joinColumnToArray($joinColumn);
-                    }
-
-                    $override['inverseJoinColumns'] = $joinColumns;
-                }
-
-                // Check for JoinTable attributes
-                if ($associationOverride->joinTable) {
-                    $joinTableAnnot = $associationOverride->joinTable;
-                    $joinTable      = [
-                        'name'      => $joinTableAnnot->name,
-                        'schema'    => $joinTableAnnot->schema,
-                        'joinColumns' => $override['joinColumns'] ?? [],
-                        'inverseJoinColumns' => $override['inverseJoinColumns'] ?? [],
-                    ];
-
-                    unset($override['joinColumns'], $override['inverseJoinColumns']);
-
-                    $override['joinTable'] = $joinTable;
-                }
-
-                // Check for inversedBy
-                if ($associationOverride->inversedBy) {
-                    $override['inversedBy'] = $associationOverride->inversedBy;
-                }
-
-                // Check for `fetch`
-                if ($associationOverride->fetch) {
-                    $override['fetch'] = constant(Mapping\ClassMetadata::class . '::FETCH_' . $associationOverride->fetch);
-                }
-
-                $metadata->setAssociationOverride($fieldName, $override);
-            }
-        }
-
         // Evaluate AttributeOverrides annotation
-        if (isset($classAttributes[Mapping\AttributeOverrides::class])) {
-            $attributeOverridesAnnot = $classAttributes[Mapping\AttributeOverrides::class];
+        if (isset($classAttributes[Mapping\AttributeOverride::class])) {
+            foreach ($classAttributes[Mapping\AttributeOverride::class] as $attributeOverrideAttribute) {
+                $attributeOverride = $this->columnToArray($attributeOverrideAttribute->name, $attributeOverrideAttribute->column);
 
-            foreach ($attributeOverridesAnnot->overrides as $attributeOverride) {
-                $mapping = $this->columnToArray($attributeOverride->name, $attributeOverride->column);
-
-                $metadata->setAttributeOverride($attributeOverride->name, $mapping);
+                $metadata->setAttributeOverride($attributeOverrideAttribute->name, $attributeOverride);
             }
         }
 
@@ -526,20 +466,6 @@ class AttributeDriver extends AnnotationDriver
         }
 
         return constant('Doctrine\ORM\Mapping\ClassMetadata::FETCH_' . $fetchMode);
-    }
-
-    /**
-     * Attempts to resolve the generated mode.
-     *
-     * @throws MappingException If the fetch mode is not valid.
-     */
-    private function getGeneratedMode(string $generatedMode): int
-    {
-        if (! defined('Doctrine\ORM\Mapping\ClassMetadata::GENERATED_' . $generatedMode)) {
-            throw MappingException::invalidGeneratedMode($generatedMode);
-        }
-
-        return constant('Doctrine\ORM\Mapping\ClassMetadata::GENERATED_' . $generatedMode);
     }
 
     /**
@@ -628,7 +554,6 @@ class AttributeDriver extends AnnotationDriver
      *                   unique: bool,
      *                   nullable: bool,
      *                   precision: int,
-     *                   enumType?: class-string,
      *                   options?: mixed[],
      *                   columnName?: string,
      *                   columnDefinition?: string
@@ -656,22 +581,6 @@ class AttributeDriver extends AnnotationDriver
 
         if (isset($column->columnDefinition)) {
             $mapping['columnDefinition'] = $column->columnDefinition;
-        }
-
-        if ($column->updatable === false) {
-            $mapping['notUpdatable'] = true;
-        }
-
-        if ($column->insertable === false) {
-            $mapping['notInsertable'] = true;
-        }
-
-        if ($column->generated !== null) {
-            $mapping['generated'] = $this->getGeneratedMode($column->generated);
-        }
-
-        if ($column->enumType) {
-            $mapping['enumType'] = $column->enumType;
         }
 
         return $mapping;

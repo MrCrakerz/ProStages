@@ -6,7 +6,6 @@ namespace Doctrine\ORM\Mapping;
 
 use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * @Annotation
@@ -16,15 +15,9 @@ use Doctrine\ORM\EntityRepository;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class MappedSuperclass implements Annotation
 {
-    /**
-     * @var string|null
-     * @psalm-var class-string<EntityRepository>|null
-     */
+    /** @var string|null */
     public $repositoryClass;
 
-    /**
-     * @psalm-param class-string<EntityRepository>|null $repositoryClass
-     */
     public function __construct(?string $repositoryClass = null)
     {
         $this->repositoryClass = $repositoryClass;

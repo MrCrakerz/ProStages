@@ -189,6 +189,7 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
                         case self::$useDeprecatedConstants ? DBALType::TARRAY : Types::ARRAY:
                         // no break
                         case 'json_array':
+                        case 'json':
                             return [new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true)];
 
                         case self::$useDeprecatedConstants ? DBALType::SIMPLE_ARRAY : Types::SIMPLE_ARRAY:
@@ -230,7 +231,7 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
     {
         try {
             return $this->entityManager ? $this->entityManager->getClassMetadata($class) : $this->classMetadataFactory->getMetadataFor($class);
-        } catch (MappingException|OrmMappingException $exception) {
+        } catch (MappingException | OrmMappingException $exception) {
             return null;
         }
     }
@@ -316,6 +317,7 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
             case self::$useDeprecatedConstants ? DBALType::SIMPLE_ARRAY : Types::SIMPLE_ARRAY:
             // no break
             case 'json_array':
+            case 'json':
                 return Type::BUILTIN_TYPE_ARRAY;
         }
 

@@ -15,16 +15,16 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Table implements Annotation
 {
-    /** @var string|null */
+    /** @var string */
     public $name;
 
-    /** @var string|null */
+    /** @var string */
     public $schema;
 
-    /** @var array<\Doctrine\ORM\Mapping\Index>|null */
+    /** @var array<\Doctrine\ORM\Mapping\Index> */
     public $indexes;
 
-    /** @var array<\Doctrine\ORM\Mapping\UniqueConstraint>|null */
+    /** @var array<\Doctrine\ORM\Mapping\UniqueConstraint> */
     public $uniqueConstraints;
 
     /** @var array<string,mixed> */

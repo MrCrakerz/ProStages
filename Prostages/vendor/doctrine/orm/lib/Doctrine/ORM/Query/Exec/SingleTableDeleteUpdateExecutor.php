@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Doctrine\ORM\Query\Exec;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\Query\AST;
 use Doctrine\ORM\Query\SqlWalker;
 
@@ -38,10 +37,6 @@ class SingleTableDeleteUpdateExecutor extends AbstractSqlExecutor
      */
     public function execute(Connection $conn, array $params, array $types)
     {
-        if ($conn instanceof PrimaryReadReplicaConnection) {
-            $conn->ensureConnectedToPrimary();
-        }
-
         return $conn->executeStatement($this->_sqlStatements, $params, $types);
     }
 }

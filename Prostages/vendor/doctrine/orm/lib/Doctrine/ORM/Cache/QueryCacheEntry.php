@@ -12,13 +12,15 @@ use function microtime;
 class QueryCacheEntry implements CacheEntry
 {
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var array<string, mixed> List of entity identifiers
      */
     public $result;
 
     /**
-     * @readonly Public only for performance reasons, it should be considered immutable.
+     * READ-ONLY: Public only for performance reasons, it should be considered immutable.
+     *
      * @var float Time creation of this cache entry
      */
     public $time;

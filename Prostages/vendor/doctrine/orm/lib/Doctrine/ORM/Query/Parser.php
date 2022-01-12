@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doctrine\ORM\Query;
 
 use Doctrine\Deprecations\Deprecation;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
@@ -87,7 +88,8 @@ use function substr;
 class Parser
 {
     /**
-     * @readonly Maps BUILT-IN string function names to AST class names.
+     * READ-ONLY: Maps BUILT-IN string function names to AST class names.
+     *
      * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $stringFunctions = [
@@ -100,7 +102,8 @@ class Parser
     ];
 
     /**
-     * @readonly Maps BUILT-IN numeric function names to AST class names.
+     * READ-ONLY: Maps BUILT-IN numeric function names to AST class names.
+     *
      * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $numericFunctions = [
@@ -123,7 +126,8 @@ class Parser
     ];
 
     /**
-     * @readonly Maps BUILT-IN datetime function names to AST class names.
+     * READ-ONLY: Maps BUILT-IN datetime function names to AST class names.
+     *
      * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $datetimeFunctions = [
@@ -210,7 +214,7 @@ class Parser
      */
     private $customOutputWalker;
 
-    /** @psalm-var array<string, AST\SelectExpression> */
+    /** @psalm-var list<AST\SelectExpression> */
     private $identVariableExpressions = [];
 
     /**
@@ -2755,9 +2759,9 @@ class Parser
     }
 
     /**
-     * InParameter ::= ArithmeticExpression | InputParameter
+     * InParameter ::= Literal | InputParameter
      *
-     * @return AST\InputParameter|AST\ArithmeticExpression
+     * @return AST\InputParameter|AST\Literal
      */
     public function InParameter()
     {
@@ -2765,7 +2769,7 @@ class Parser
             return $this->InputParameter();
         }
 
-        return $this->ArithmeticExpression();
+        return $this->Literal();
     }
 
     /**

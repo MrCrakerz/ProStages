@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 use InvalidArgumentException;
 
-use function get_debug_type;
+use function get_class;
 use function sprintf;
 
 /**
@@ -108,7 +108,7 @@ class PreUpdateEventArgs extends LifecycleEventArgs
             throw new InvalidArgumentException(sprintf(
                 'Field "%s" is not a valid field of the entity "%s" in PreUpdateEventArgs.',
                 $field,
-                get_debug_type($this->getEntity())
+                get_class($this->getEntity())
             ));
         }
     }

@@ -6,14 +6,12 @@ use Closure;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Cache\ArrayResult;
 use Doctrine\DBAL\Cache\CacheException;
+use Doctrine\DBAL\Cache\CachingResult;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\Statement as DriverStatement;
-use Doctrine\DBAL\Event\TransactionBeginEventArgs;
-use Doctrine\DBAL\Event\TransactionCommitEventArgs;
-use Doctrine\DBAL\Event\TransactionRollBackEventArgs;
 use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\InvalidArgumentException;
@@ -27,9 +25,9 @@ use Doctrine\Deprecations\Deprecation;
 use Throwable;
 use Traversable;
 
+use function array_key_exists;
 use function assert;
 use function count;
-use function get_class;
 use function implode;
 use function is_int;
 use function is_string;
@@ -72,7 +70,7 @@ class Connection
     protected $_eventManager;
 
     /**
-     * @deprecated Use {@see createExpressionBuilder()} instead.
+     * @deprecated Use {@link createExpressionBuilder()} instead.
      *
      * @var ExpressionBuilder
      */
@@ -131,7 +129,7 @@ class Connection
     /**
      * The schema manager.
      *
-     * @deprecated Use {@see createSchemaManager()} instead.
+     * @deprecated Use {@link createSchemaManager()} instead.
      *
      * @var AbstractSchemaManager|null
      */
@@ -291,7 +289,7 @@ class Connection
     /**
      * Gets the ExpressionBuilder for the connection.
      *
-     * @deprecated Use {@see createExpressionBuilder()} instead.
+     * @deprecated Use {@link createExpressionBuilder()} instead.
      *
      * @return ExpressionBuilder
      */
@@ -440,13 +438,6 @@ class Connection
             }
         }
 
-        Deprecation::trigger(
-            'doctrine/dbal',
-            'https://github.com/doctrine/dbal/pulls/4750',
-            'Not implementing the ServerInfoAwareConnection interface in %s is deprecated',
-            get_class($connection)
-        );
-
         // Unable to detect platform version.
         return null;
     }
@@ -512,7 +503,11 @@ class Connection
      */
     public function fetchAssociative(string $query, array $params = [], array $types = [])
     {
-        return $this->executeQuery($query, $params, $types)->fetchAssociative();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchAssociative();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -529,7 +524,11 @@ class Connection
      */
     public function fetchNumeric(string $query, array $params = [], array $types = [])
     {
-        return $this->executeQuery($query, $params, $types)->fetchNumeric();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchNumeric();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -546,7 +545,11 @@ class Connection
      */
     public function fetchOne(string $query, array $params = [], array $types = [])
     {
-        return $this->executeQuery($query, $params, $types)->fetchOne();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchOne();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -753,7 +756,7 @@ class Connection
      *
      * @return array<int, int|string|Type|null>|array<string, int|string|Type|null>
      */
-    private function extractTypeValues(array $columnList, array $types): array
+    private function extractTypeValues(array $columnList, array $types)
     {
         $typeValues = [];
 
@@ -784,9 +787,6 @@ class Connection
     }
 
     /**
-     * The usage of this method is discouraged. Use prepared statements
-     * or {@see AbstractPlatform::quoteStringLiteral()} instead.
-     *
      * @param mixed                $value
      * @param int|string|Type|null $type
      *
@@ -814,7 +814,11 @@ class Connection
      */
     public function fetchAllNumeric(string $query, array $params = [], array $types = []): array
     {
-        return $this->executeQuery($query, $params, $types)->fetchAllNumeric();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchAllNumeric();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -830,7 +834,11 @@ class Connection
      */
     public function fetchAllAssociative(string $query, array $params = [], array $types = []): array
     {
-        return $this->executeQuery($query, $params, $types)->fetchAllAssociative();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchAllAssociative();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -881,7 +889,11 @@ class Connection
      */
     public function fetchFirstColumn(string $query, array $params = [], array $types = []): array
     {
-        return $this->executeQuery($query, $params, $types)->fetchFirstColumn();
+        try {
+            return $this->executeQuery($query, $params, $types)->fetchFirstColumn();
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -897,7 +909,15 @@ class Connection
      */
     public function iterateNumeric(string $query, array $params = [], array $types = []): Traversable
     {
-        return $this->executeQuery($query, $params, $types)->iterateNumeric();
+        try {
+            $result = $this->executeQuery($query, $params, $types);
+
+            while (($row = $result->fetchNumeric()) !== false) {
+                yield $row;
+            }
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -914,7 +934,15 @@ class Connection
      */
     public function iterateAssociative(string $query, array $params = [], array $types = []): Traversable
     {
-        return $this->executeQuery($query, $params, $types)->iterateAssociative();
+        try {
+            $result = $this->executeQuery($query, $params, $types);
+
+            while (($row = $result->fetchAssociative()) !== false) {
+                yield $row;
+            }
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -965,7 +993,15 @@ class Connection
      */
     public function iterateColumn(string $query, array $params = [], array $types = []): Traversable
     {
-        return $this->executeQuery($query, $params, $types)->iterateColumn();
+        try {
+            $result = $this->executeQuery($query, $params, $types);
+
+            while (($value = $result->fetchOne()) !== false) {
+                yield $value;
+            }
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $query, $params, $types);
+        }
     }
 
     /**
@@ -977,15 +1013,7 @@ class Connection
      */
     public function prepare(string $sql): Statement
     {
-        $connection = $this->getWrappedConnection();
-
-        try {
-            $statement = $connection->prepare($sql);
-        } catch (Driver\Exception $e) {
-            throw $this->convertExceptionDuringQuery($e, $sql);
-        }
-
-        return new Statement($this, $statement, $sql);
+        return new Statement($sql, $this);
     }
 
     /**
@@ -1056,7 +1084,7 @@ class Connection
      */
     public function executeCacheQuery($sql, $params, $types, QueryCacheProfile $qcp): Result
     {
-        $resultCache = $qcp->getResultCache() ?? $this->_config->getResultCache();
+        $resultCache = $qcp->getResultCacheDriver() ?? $this->_config->getResultCacheImpl();
 
         if ($resultCache === null) {
             throw CacheException::noResultDriverConfigured();
@@ -1067,31 +1095,29 @@ class Connection
 
         [$cacheKey, $realKey] = $qcp->generateCacheKeys($sql, $params, $types, $connectionParams);
 
-        $item = $resultCache->getItem($cacheKey);
+        // fetch the row pointers entry
+        $data = $resultCache->fetch($cacheKey);
 
-        if ($item->isHit()) {
-            $value = $item->get();
-            if (isset($value[$realKey])) {
-                return new Result(new ArrayResult($value[$realKey]), $this);
+        if ($data !== false) {
+            // is the real key part of this row pointers map or is the cache only pointing to other cache keys?
+            if (isset($data[$realKey])) {
+                $result = new ArrayResult($data[$realKey]);
+            } elseif (array_key_exists($realKey, $data)) {
+                $result = new ArrayResult([]);
             }
-        } else {
-            $value = [];
         }
 
-        $data = $this->fetchAllAssociative($sql, $params, $types);
-
-        $value[$realKey] = $data;
-
-        $item->set($value);
-
-        $lifetime = $qcp->getLifetime();
-        if ($lifetime > 0) {
-            $item->expiresAfter($lifetime);
+        if (! isset($result)) {
+            $result = new CachingResult(
+                $this->executeQuery($sql, $params, $types),
+                $resultCache,
+                $cacheKey,
+                $realKey,
+                $qcp->getLifetime()
+            );
         }
 
-        $resultCache->save($item);
-
-        return new Result(new ArrayResult($data), $this);
+        return new Result($result, $this);
     }
 
     /**
@@ -1178,14 +1204,6 @@ class Connection
      */
     public function lastInsertId($name = null)
     {
-        if ($name !== null) {
-            Deprecation::trigger(
-                'doctrine/dbal',
-                'https://github.com/doctrine/dbal/issues/4687',
-                'The usage of Connection::lastInsertId() with a sequence name is deprecated.'
-            );
-        }
-
         try {
             return $this->getWrappedConnection()->lastInsertId($name);
         } catch (Driver\Exception $e) {
@@ -1255,9 +1273,10 @@ class Connection
     }
 
     /**
-     * Returns the savepoint name to use for nested transactions.
+     * Returns the savepoint name to use for nested transactions are false if they are not supported
+     * "savepointFormat" parameter is not set
      *
-     * @return string
+     * @return mixed A string with the savepoint name or false.
      */
     protected function _getNestedTransactionSavePointName()
     {
@@ -1297,8 +1316,6 @@ class Connection
                 $logger->stopQuery();
             }
         }
-
-        $this->getEventManager()->dispatchEvent(Events::onTransactionBegin, new TransactionBeginEventArgs($this));
 
         return true;
     }
@@ -1346,8 +1363,6 @@ class Connection
         }
 
         --$this->transactionNestingLevel;
-
-        $this->getEventManager()->dispatchEvent(Events::onTransactionCommit, new TransactionCommitEventArgs($this));
 
         if ($this->autoCommit !== false || $this->transactionNestingLevel !== 0) {
             return $result;
@@ -1424,8 +1439,6 @@ class Connection
             $this->isRollbackOnly = true;
             --$this->transactionNestingLevel;
         }
-
-        $this->getEventManager()->dispatchEvent(Events::onTransactionRollBack, new TransactionRollBackEventArgs($this));
 
         return true;
     }
@@ -1528,7 +1541,7 @@ class Connection
      * Gets the SchemaManager that can be used to inspect or change the
      * database schema through the connection.
      *
-     * @deprecated Use {@see createSchemaManager()} instead.
+     * @deprecated Use {@link createSchemaManager()} instead.
      *
      * @return AbstractSchemaManager
      *

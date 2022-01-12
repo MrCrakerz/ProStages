@@ -61,7 +61,7 @@ class MySQL57Platform extends MySQLPlatform
     /**
      * {@inheritdoc}
      *
-     * @deprecated Implement {@see createReservedKeywordsList()} instead.
+     * @deprecated Implement {@link createReservedKeywordsList()} instead.
      */
     protected function getReservedKeywordsClass()
     {

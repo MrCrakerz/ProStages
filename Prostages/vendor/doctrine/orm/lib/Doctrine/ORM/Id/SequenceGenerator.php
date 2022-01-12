@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Id;
 
-use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
 use Serializable;
 
 use function serialize;
@@ -51,18 +50,15 @@ class SequenceGenerator extends AbstractIdGenerator implements Serializable
     /**
      * {@inheritDoc}
      */
-    public function generateId(EntityManagerInterface $em, $entity)
+    public function generate(EntityManager $em, $entity)
     {
         if ($this->_maxValue === null || $this->_nextValue === $this->_maxValue) {
             // Allocate new values
-            $connection = $em->getConnection();
-            $sql        = $connection->getDatabasePlatform()->getSequenceNextValSQL($this->_sequenceName);
+            $conn = $em->getConnection();
+            $sql  = $conn->getDatabasePlatform()->getSequenceNextValSQL($this->_sequenceName);
 
-            if ($connection instanceof PrimaryReadReplicaConnection) {
-                $connection->ensureConnectedToPrimary();
-            }
-
-            $this->_nextValue = (int) $connection->executeQuery($sql)->fetchOne();
+            // Using `query` to force usage of the master server in MasterSlaveConnection
+            $this->_nextValue = (int) $conn->executeQuery($sql)->fetchOne();
             $this->_maxValue  = $this->_nextValue + $this->_allocationSize;
         }
 

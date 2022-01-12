@@ -9,8 +9,6 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-use function sprintf;
-
 /**
  * "LOWER" "(" StringPrimary ")"
  *
@@ -18,7 +16,7 @@ use function sprintf;
  */
 class LowerFunction extends FunctionNode
 {
-    /** @var Node */
+    /** @psalm-var Node */
     public $stringPrimary;
 
     /**
@@ -27,8 +25,7 @@ class LowerFunction extends FunctionNode
      */
     public function getSql(SqlWalker $sqlWalker)
     {
-        return sprintf(
-            'LOWER(%s)',
+        return $sqlWalker->getConnection()->getDatabasePlatform()->getLowerExpression(
             $sqlWalker->walkSimpleArithmeticExpression($this->stringPrimary)
         );
     }

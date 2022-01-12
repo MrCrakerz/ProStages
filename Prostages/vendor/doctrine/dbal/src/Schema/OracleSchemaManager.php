@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Type;
 
 use function array_change_key_case;
 use function array_values;
+use function assert;
 use function is_string;
 use function preg_match;
 use function str_replace;
@@ -19,8 +20,6 @@ use const CASE_LOWER;
 
 /**
  * Oracle Schema Manager.
- *
- * @extends AbstractSchemaManager<OraclePlatform>
  */
 class OracleSchemaManager extends AbstractSchemaManager
 {
@@ -258,7 +257,7 @@ class OracleSchemaManager extends AbstractSchemaManager
      */
     public function createDatabase($database)
     {
-        $statement = $this->_platform->getCreateDatabaseSQL($database);
+        $statement = 'CREATE USER ' . $database;
 
         $params = $this->_conn->getParams();
 
@@ -283,6 +282,8 @@ class OracleSchemaManager extends AbstractSchemaManager
      */
     public function dropAutoincrement($table)
     {
+        assert($this->_platform instanceof OraclePlatform);
+
         $sql = $this->_platform->getDropAutoincrementSql($table);
         foreach ($sql as $query) {
             $this->_conn->executeStatement($query);
@@ -308,8 +309,10 @@ class OracleSchemaManager extends AbstractSchemaManager
      * and thus make references to the particular identifier work.
      *
      * @param string $identifier The identifier to quote.
+     *
+     * @return string The quoted identifier.
      */
-    private function getQuotedIdentifierName($identifier): string
+    private function getQuotedIdentifierName($identifier)
     {
         if (preg_match('/[a-z]/', $identifier) === 1) {
             return $this->_platform->quoteIdentifier($identifier);
@@ -325,7 +328,9 @@ class OracleSchemaManager extends AbstractSchemaManager
     {
         $table = parent::listTableDetails($name);
 
-        $sql = $this->_platform->getListTableCommentsSQL($name);
+        $platform = $this->_platform;
+        assert($platform instanceof OraclePlatform);
+        $sql = $platform->getListTableCommentsSQL($name);
 
         $tableOptions = $this->_conn->fetchAssociative($sql);
 

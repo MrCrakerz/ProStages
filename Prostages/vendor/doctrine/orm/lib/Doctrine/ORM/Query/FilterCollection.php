@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doctrine\ORM\Query;
 
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use InvalidArgumentException;
@@ -39,7 +40,7 @@ class FilterCollection
     /**
      * The EntityManager that "owns" this FilterCollection instance.
      *
-     * @var EntityManagerInterface
+     * @var EntityManager
      */
     private $em;
 

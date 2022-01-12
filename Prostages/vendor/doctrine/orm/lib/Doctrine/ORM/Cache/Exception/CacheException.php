@@ -6,6 +6,8 @@ namespace Doctrine\ORM\Cache\Exception;
 
 use Doctrine\ORM\Cache\CacheException as BaseCacheException;
 
+use function sprintf;
+
 /**
  * Exception for cache.
  */

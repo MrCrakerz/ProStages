@@ -107,7 +107,7 @@ class Configuration
             if (!isset($this->verboseOutput[$group])) {
                 throw new \InvalidArgumentException(sprintf('Unsupported verbosity group "%s", expected one of "%s".', $group, implode('", "', array_keys($this->verboseOutput))));
             }
-            $this->verboseOutput[$group] = $status;
+            $this->verboseOutput[$group] = (bool) $status;
         }
 
         if ($generateBaseline && !$baselineFile) {

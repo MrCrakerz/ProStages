@@ -102,11 +102,8 @@ class Deprecation
         }
 
         set_error_handler(function () {});
-        try {
-            $parsedMsg = unserialize($this->message);
-        } finally {
-            restore_error_handler();
-        }
+        $parsedMsg = unserialize($this->message);
+        restore_error_handler();
         if ($parsedMsg && isset($parsedMsg['deprecation'])) {
             $this->message = $parsedMsg['deprecation'];
             $this->originClass = $parsedMsg['class'];
@@ -313,7 +310,7 @@ class Deprecation
     }
 
     /**
-     * @return string[]
+     * @return string[] an array of paths
      */
     private static function getVendors()
     {

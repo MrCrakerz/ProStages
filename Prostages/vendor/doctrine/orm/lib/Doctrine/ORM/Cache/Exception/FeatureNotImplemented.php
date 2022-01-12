@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Cache\Exception;
 
+use LogicException;
+
 class FeatureNotImplemented extends CacheException
 {
     public static function scalarResults(): self

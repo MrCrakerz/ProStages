@@ -9,8 +9,6 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-use function sprintf;
-
 /**
  * "SQRT" "(" SimpleArithmeticExpression ")"
  *
@@ -27,8 +25,7 @@ class SqrtFunction extends FunctionNode
      */
     public function getSql(SqlWalker $sqlWalker)
     {
-        return sprintf(
-            'SQRT(%s)',
+        return $sqlWalker->getConnection()->getDatabasePlatform()->getSqrtExpression(
             $sqlWalker->walkSimpleArithmeticExpression($this->simpleArithmeticExpression)
         );
     }

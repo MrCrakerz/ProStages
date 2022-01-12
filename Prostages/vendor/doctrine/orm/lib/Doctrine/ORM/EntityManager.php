@@ -32,7 +32,7 @@ use Throwable;
 
 use function array_keys;
 use function call_user_func;
-use function get_debug_type;
+use function get_class;
 use function gettype;
 use function is_array;
 use function is_callable;
@@ -120,7 +120,7 @@ use function sprintf;
     /**
      * The expression builder instance used to generate query expressions.
      *
-     * @var Expr|null
+     * @var Expr
      */
     private $expressionBuilder;
 
@@ -134,15 +134,11 @@ use function sprintf;
     /**
      * Collection of query filters.
      *
-     * @var FilterCollection|null
+     * @var FilterCollection
      */
     private $filterCollection;
 
-    /**
-     * The second level cache regions API.
-     *
-     * @var Cache|null
-     */
+    /** @var Cache The second level cache regions API. */
     private $cache;
 
     /**
@@ -403,7 +399,6 @@ use function sprintf;
      * @param int|null $lockVersion The version of the entity to find when using
      * optimistic locking.
      * @psalm-param class-string<T> $className
-     * @psalm-param LockMode::*|null $lockMode
      *
      * @return object|null The entity instance or NULL if the entity can not be found.
      * @psalm-return ?T
@@ -949,7 +944,7 @@ use function sprintf;
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid $connection argument of type %s given%s.',
-                    get_debug_type($connection),
+                    is_object($connection) ? get_class($connection) : gettype($connection),
                     is_object($connection) ? '' : ': "' . $connection . '"'
                 )
             );
@@ -991,8 +986,6 @@ use function sprintf;
     }
 
     /**
-     * @psalm-param LockMode::* $lockMode
-     *
      * @throws OptimisticLockException
      * @throws TransactionRequiredException
      */

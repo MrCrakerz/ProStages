@@ -23,7 +23,7 @@ class MariaDb1027Platform extends MySQLPlatform
     }
 
     /**
-     * @deprecated Implement {@see createReservedKeywordsList()} instead.
+     * @deprecated Implement {@link createReservedKeywordsList()} instead.
      */
     protected function getReservedKeywordsClass(): string
     {

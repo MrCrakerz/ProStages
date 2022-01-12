@@ -157,7 +157,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     }
 
     /**
-     * @psalm-return static::VISIBILITY_*
+     * @return string
      */
     public function getVisibility()
     {

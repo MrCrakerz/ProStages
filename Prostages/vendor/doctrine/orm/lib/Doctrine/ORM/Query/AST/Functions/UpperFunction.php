@@ -9,8 +9,6 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-use function sprintf;
-
 /**
  * "UPPER" "(" StringPrimary ")"
  *
@@ -27,8 +25,7 @@ class UpperFunction extends FunctionNode
      */
     public function getSql(SqlWalker $sqlWalker)
     {
-        return sprintf(
-            'UPPER(%s)',
+        return $sqlWalker->getConnection()->getDatabasePlatform()->getUpperExpression(
             $sqlWalker->walkSimpleArithmeticExpression($this->stringPrimary)
         );
     }

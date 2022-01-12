@@ -6,7 +6,8 @@ use function ltrim;
 
 class VarTag extends AbstractTypeableTag implements TagInterface
 {
-    private ?string $variableName = null;
+    /** @var string|null */
+    private $variableName;
 
     /**
      * @param string|string[] $types
