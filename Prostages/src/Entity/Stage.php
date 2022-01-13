@@ -30,12 +30,12 @@ class Stage
     private $descMissions;
 
     /**
-     * @ORM\ManyToMany(targetEntity=formation::class, inversedBy="stages")
+     * @ORM\ManyToMany(targetEntity=Formation::class, inversedBy="stages")
      */
     private $formations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=entreprise::class, inversedBy="stages")
+     * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="stages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $entreprise;
