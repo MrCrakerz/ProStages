@@ -15,11 +15,10 @@ class ProstagesController extends AbstractController
      */
     public function index(): Response
     {
+		//Affichage de la page principale du site
 		$stageRepository = $this->getDoctrine()->getRepository(Stage::class);
 		$stages=$stageRepository->findAll();
-
         return $this->render('prostages/index.html.twig',['stages'=>$stages]);
-        //return new Response ('<html > <body > <h1 > Bienvenue sur la page d\'accueil de Prostages </h1 > </ body > </ html >');
     }
 
 	/**
@@ -27,10 +26,10 @@ class ProstagesController extends AbstractController
 	*/
 	public function afficherEntreprises () : Response
 	{
-	  $entrepriseRepository = $this->getDoctrine()->getRepository(Entreprise::class);
-	  $entreprises=$entrepriseRepository->findAll();
-      return $this->render('prostages/entreprise.html.twig',['entreprises'=>$entreprises]);
-    //return new Response ('<html > <body > <h1 > Cette page affichera la liste des entreprises proposant un stage </h1 > </ body > </ html >');
+		//Affichage de la page de la liste des entreprises proposant des stages
+		$entrepriseRepository = $this->getDoctrine()->getRepository(Entreprise::class);
+		$entreprises=$entrepriseRepository->findAll();
+		return $this->render('prostages/entreprise.html.twig',['entreprises'=>$entreprises]);
 	}
 
 	/**
@@ -38,9 +37,10 @@ class ProstagesController extends AbstractController
 	*/
 	public function afficherFormations () : Response
 	{
-	$formationRepository = $this->getDoctrine()->getRepository(Formation::class);
-	$formations=$formationRepository->findAll();
-    return $this->render('prostages/formation.html.twig',['formations'=>$formations]);
+		//Affichage de la page de la liste des formations ayant des stages les concernant
+		$formationRepository = $this->getDoctrine()->getRepository(Formation::class);
+		$formations=$formationRepository->findAll();
+		return $this->render('prostages/formation.html.twig',['formations'=>$formations]);
 	}
 
 	/**
@@ -48,10 +48,10 @@ class ProstagesController extends AbstractController
 	 */
 	 public function afficherStages ($id) : Response
 	 {
+		//Affichage de la page mettant en évidence les détails d'un stage donné
 	 	$stageRepository = $this->getDoctrine()->getRepository(Stage::class);
 		$stage = $stageRepository->find($id);
 		 return $this->render('prostages/detailStage.html.twig',['stage'=>$stage,]);
-	//return new Response ('Cette page affichera le descriptif du stage ayant pour identifiant '.$id);
 	 }
 
 	 /**
@@ -59,11 +59,10 @@ class ProstagesController extends AbstractController
 	 */
 	public function triParEntreprise ($id) : Response
 	{
+		//Affichage de la page listant les stages proposés par une certaine entreprise donnée
 		$entrepriseRepository = $this->getDoctrine()->getRepository(Entreprise::class);
 	  	$entreprise = $entrepriseRepository->find($id);
-		
 		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$entreprise->getStages(),]);
-
 	}
 
 	 /**
@@ -71,10 +70,9 @@ class ProstagesController extends AbstractController
 	 */
 	public function triParFormation ($id) : Response
 	{
+		//Affichage de la page listant les stages concernés par une certaine formation donnée
 		$formationRepository = $this->getDoctrine()->getRepository(Formation::class);
 	  	$formation = $formationRepository->find($id);
-		
 		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$formation->getStages(),]);
-
 	}
 }
