@@ -17,10 +17,10 @@
     <tr>
       <th scope="row"></th>
       <td><a href="{{path('prostages_stages', {id:stage.id})}}"> {{stage.titre}} </a></td>
-      <td><a href="{{path('prostages_stagesParE', {id:stage.entreprise.id})}}">{{stage.entreprise.nom}}</a></td>
+      <td><a href="{{path('prostages_stagesParE', {id:stage.entreprise.id})}}"> {{stage.entreprise.nom}} </a></td>
       <td>
             {% for formation in stage.getFormations %}
-            <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a> 
+            <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a>
             {% endfor %}
       </td>
     </tr>

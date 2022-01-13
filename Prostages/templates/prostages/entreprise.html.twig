@@ -2,5 +2,24 @@
 
 
 {% block body %}
-<h1 > Cette page affichera la liste des entreprises proposant un stage </h1 >
+<table class="table table-hover table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Activite</th>
+      <th scope="col">Adresse</th>
+      <th scope="col">Site</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entreprise in entreprises %}
+    <tr>
+      <td><a href="{{path('prostages_stagesParE', {id:entreprise.id})}}"> {{entreprise.nom}} </a></td>
+      <td>{{entreprise.activite}}</td>
+      <td>{{entreprise.adresse}}</td>
+       <td><a href="{{entreprise.site}}">{{entreprise.site}}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

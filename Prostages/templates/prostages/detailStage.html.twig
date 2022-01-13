@@ -17,10 +17,10 @@
       <td>{{stage.descMissions}}</td>
       <td>
             {% for formation in stage.getFormations %}
-            {{formation.Libelle}} / 
+             <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a>
             {% endfor %}
       </td>
-      <td>{{stage.entreprise.nom}}</td>
+      <td><a href="{{path('prostages_stagesParE', {id:stage.entreprise.id})}}"> {{stage.entreprise.nom}} </a></td>
       <td>{{stage.email}}</td>
     </tr>
   </tbody>

@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Stage;
+use App\Entity\Entreprise;
+use App\Entity\Formation;
 class ProstagesController extends AbstractController
 {
     /**
@@ -21,21 +23,24 @@ class ProstagesController extends AbstractController
     }
 
 	/**
-	* @Route ("/entreprises" , name =" prostages_entreprises ")
+	* @Route ("/entreprises" , name ="prostages_entreprises")
 	*/
 	public function afficherEntreprises () : Response
 	{
-      return $this->render('prostages/entreprise.html.twig',['controller_name'=>'Tri par entreprise']);
+	  $entrepriseRepository = $this->getDoctrine()->getRepository(Entreprise::class);
+	  $entreprises=$entrepriseRepository->findAll();
+      return $this->render('prostages/entreprise.html.twig',['entreprises'=>$entreprises]);
     //return new Response ('<html > <body > <h1 > Cette page affichera la liste des entreprises proposant un stage </h1 > </ body > </ html >');
 	}
 
 	/**
-	* @Route ("/formations" , name =" prostages_formations ")
+	* @Route ("/formations" , name ="prostages_formations")
 	*/
 	public function afficherFormations () : Response
 	{
-    return $this->render('prostages/formation.html.twig',['controller_name'=>'Tri par formation']);
-    //return new Response ('<html > <body > <h1 > Cette page affichera la liste des formations de l\'IUT </h1 > </ body > </ html >');
+	$formationRepository = $this->getDoctrine()->getRepository(Formation::class);
+	$formations=$formationRepository->findAll();
+    return $this->render('prostages/formation.html.twig',['formations'=>$formations]);
 	}
 
 	/**
@@ -48,4 +53,28 @@ class ProstagesController extends AbstractController
 		 return $this->render('prostages/detailStage.html.twig',['stage'=>$stage,]);
 	//return new Response ('Cette page affichera le descriptif du stage ayant pour identifiant '.$id);
 	 }
+
+	 /**
+	 * @Route ("/stages/entreprise/{id}" , name ="prostages_stagesParE")
+	 */
+	public function triParEntreprise ($id) : Response
+	{
+		$entrepriseRepository = $this->getDoctrine()->getRepository(Entreprise::class);
+	  	$entreprise = $entrepriseRepository->find($id);
+		
+		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$entreprise->getStages(),]);
+
+	}
+
+	 /**
+	 * @Route ("/stages/formation/{id}" , name ="prostages_stagesParF")
+	 */
+	public function triParFormation ($id) : Response
+	{
+		$formationRepository = $this->getDoctrine()->getRepository(Formation::class);
+	  	$formation = $formationRepository->find($id);
+		
+		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$formation->getStages(),]);
+
+	}
 }
