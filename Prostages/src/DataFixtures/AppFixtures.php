@@ -67,29 +67,31 @@ class AppFixtures extends Fixture
         //Boucle servant à créer 30 stages
        for ($i=0; $i < 30; $i++)
        { 
-           //Création d'un stage
-           $stageFaker = new Stage();
-           //Affectation d'un titre généré grâce à la combinaison d'un mot de chacun des deux tableaux précédents 
-           $stageFaker->setTitre($tabMetiersFaker[$Faker->numberBetween($min=0,$max=count($tabMetiersFaker)-1)].$tabType[$Faker->numberBetween($min=0,$max=count($tabType)-1)]);
-           $stageFaker->setDescMissions($Faker->catchPhrase());
-           $stageFaker->setEmail($Faker->email());
-           //Grâce au tableau d'Entreprise crée précédemment, on sélectionne aléatoirmement avec Faker une entreprise
-           $stageFaker->setEntreprise($entreprises[$Faker->numberBetween($min=0,$max=count($entreprises)-1)]);
-           //Boucle servant à ajouter entre 1 et 4 formation au stage
-           for ($j=0 ; $j < $Faker->numberBetween($min=1,$max=4) ; $j++ ) 
-           { 
+            //Création d'un stage
+            $stageFaker = new Stage();
+            //Affectation d'un titre généré grâce à la combinaison d'un mot de chacun des deux tableaux précédents 
+            $stageFaker->setTitre($tabMetiersFaker[$Faker->numberBetween($min=0,$max=count($tabMetiersFaker)-1)].$tabType[$Faker->numberBetween($min=0,$max=count($tabType)-1)]);
+            $stageFaker->setDescMissions($Faker->catchPhrase());
+            $stageFaker->setEmail($Faker->email());
+            //Grâce au tableau d'Entreprise crée précédemment, on sélectionne aléatoirmement avec Faker une entreprise
+            $stageFaker->setEntreprise($entreprises[$Faker->numberBetween($min=0,$max=count($entreprises)-1)]);
+            //Boucle servant à ajouter entre 1 et 4 formation au stage
+            for ($j=0 ; $j < $Faker->numberBetween($min=1,$max=4) ; $j++ ) 
+            { 
                 //Utilisation de unique pour ne pas sélectionner deux fois la même formation
                 $numForm = $Faker->unique->numberBetween($min=0,$max=3);
-                
                 $formationAjout = $formations[$numForm];
+                //Affectation de la formation sélectionnée
                 $stageFaker->addFormation($formationAjout);
-           }
-           $manager->persist($stageFaker);
-           $Faker->unique($reset=true);
+            }
+            //Sauvegarde de l'objet dans symfony
+            $manager->persist($stageFaker);
+            //Réinitialisation de unique pour qu'il puisse réutilisé les nombres qu'il avait déjà utilisé
+            $Faker->unique($reset=true);
            
 
        }
-
+       //Envoie de toutes les données générées en base de données
        $manager->flush();
     }
 }
