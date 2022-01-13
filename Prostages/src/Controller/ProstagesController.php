@@ -43,7 +43,9 @@ class ProstagesController extends AbstractController
 	 */
 	 public function afficherStages ($id) : Response
 	 {
-     return $this->render('prostages/detailStage.html.twig',['id'=>$id,]);
-		//return new Response ('Cette page affichera le descriptif du stage ayant pour identifiant '.$id);
+	 	$stageRepository = $this->getDoctrine()->getRepository(Stage::class);
+		$stage = $stageRepository->find($id);
+		 return $this->render('prostages/detailStage.html.twig',['stage'=>$stage,]);
+	//return new Response ('Cette page affichera le descriptif du stage ayant pour identifiant '.$id);
 	 }
 }

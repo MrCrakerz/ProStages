@@ -1,5 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1> Cette page affichera le descriptif du stage ayant pour identifiant {{ id }} </h1>
+<table class="table table-hover table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Titre</th>
+      <th scope="col">Missions</th>
+      <th scope="col">Formations</th>
+      <th scope="col">Entreprise</th>
+      <th scope="col">E-mail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{stage.titre}}</td>
+      <td>{{stage.descMissions}}</td>
+      <td>
+            {% for formation in stage.getFormations %}
+            {{formation.Libelle}} / 
+            {% endfor %}
+      </td>
+      <td>{{stage.entreprise.nom}}</td>
+      <td>{{stage.email}}</td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}

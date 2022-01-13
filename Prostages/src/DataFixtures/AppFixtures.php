@@ -50,14 +50,14 @@ class AppFixtures extends Fixture
 
        
 
-       $tabMetiersFaker = array("Satgiaire ","Assistant ","Responsable ","Ingénieur ");
+       $tabMetiersFaker = array("Satgiaire ","Assistant ","Responsable ","Ingénieur");
        $tabType = array("en Ménage","en Informatique","en Gestions de BD","en POO","en Programmation WEB","en Mécanique","en Electronique");
 
        for ($i=0; $i < 30; $i++)
        { 
            $stageFaker = new Stage();
            $stageFaker->setTitre($tabMetiersFaker[$Faker->numberBetween($min=0,$max=count($tabMetiersFaker)-1)].$tabType[$Faker->numberBetween($min=0,$max=count($tabType)-1)]);
-           $stageFaker->setDescMissions($Faker->realText($maxNbCahrs=250,$indexSize=2));
+           $stageFaker->setDescMissions($Faker->catchPhrase());
            $stageFaker->setEmail($Faker->email());
            $stageFaker->setEntreprise($entreprises[$Faker->numberBetween($min=0,$max=count($entreprises)-1)]);
            for ($j=0 ; $j < $Faker->numberBetween($min=1,$max=4) ; $j++ ) 
