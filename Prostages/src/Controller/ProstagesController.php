@@ -39,7 +39,7 @@ class ProstagesController extends AbstractController
 	}
 
 	/**
-	 * @Route ("/stages/{id}" , name =" openclassdut_stages ")
+	 * @Route ("/stages/{id}" , name ="prostages_stages")
 	 */
 	 public function afficherStages ($id) : Response
 	 {
