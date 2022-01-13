@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<!-- Tableau bootstrap -->
 <table class="table table-hover table-dark">
   <thead>
     <tr>
+      <!-- Nom des colonnes du tableau -->
       <th scope="col">Titre</th>
       <th scope="col">Missions</th>
       <th scope="col">Formations</th>
@@ -13,9 +15,11 @@
   </thead>
   <tbody>
     <tr>
+      <!-- Contenu des colonnes -->
       <td>{{stage.titre}}</td>
       <td>{{stage.descMissions}}</td>
       <td>
+            <!-- Boucle pour afficher toutes les formations -->
             {% for formation in stage.getFormations %}
              <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a>
             {% endfor %}

@@ -5,6 +5,7 @@
 <table class="table table-hover table-dark">
   <thead>
     <tr>
+      <!-- Titres des colonnes -->
       <th scope="col">Nom</th>
       <th scope="col">Activite</th>
       <th scope="col">Adresse</th>
@@ -12,12 +13,14 @@
     </tr>
   </thead>
   <tbody>
+    <!-- Boucle pour afficher le détail de toutes les entreprises -->
     {% for entreprise in entreprises %}
     <tr>
+      <!-- Contenu des colonnes -->
       <td><a href="{{path('prostages_stagesParE', {id:entreprise.id})}}"> {{entreprise.nom}} </a></td>
       <td>{{entreprise.activite}}</td>
       <td>{{entreprise.adresse}}</td>
-       <td><a href="{{entreprise.site}}">{{entreprise.site}}</a></td>
+      <td><a href="{{entreprise.site}}">{{entreprise.site}}</a></td>
     </tr>
     {% endfor %}
   </tbody>
