@@ -49,7 +49,7 @@ class StageRepository extends ServiceEntityRepository
     */
 
     
-    public function findByFormation($nom): ?Stage
+    public function findByFormationDQL($nom): ?Stage
     {
         $requete = $this->getEntityManager()->createQuery("SELECT s,f
         from App\Entity\Stage s
@@ -59,11 +59,23 @@ class StageRepository extends ServiceEntityRepository
         $requete->setParameter('nom',$nom);
         return $requete->execute();
     }
-    
+
+    public function findByFormation($nom)
+    {
+        return $this -> createQueryBuilder ('s')
+                    ->join('s. formations ','f')
+                    ->join('s. entreprise ','e')
+                    ->where ('f. libelle = :nomFormations')
+                    -> setParameter ('nomFormations', $nom )
+                    -> getQuery ()
+                    -> getResult ();
+    }
+
     public function findByEntreprise ( $entreprise)
     {
         return $this -> createQueryBuilder ('s')
                     ->join('s. entreprise ','e')
+                    ->join('s. formations ','f')
                     ->where ('e. nom = :nomEntreprise')
                     -> setParameter ('nomEntreprise', $entreprise )
                     -> getQuery ()

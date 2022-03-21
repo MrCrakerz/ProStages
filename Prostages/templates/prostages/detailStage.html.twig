@@ -21,10 +21,10 @@
       <td>
             <!-- Boucle pour afficher toutes les formations -->
             {% for formation in stage.getFormations %}
-             <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a>
+             <a href="{{path('prostages_stagesParFormation', {nomFormation:formation.libelle})}}">{{formation.Libelle}} / </a>
             {% endfor %}
       </td>
-      <td><a href="{{path('prostages_stagesParE', {id:stage.entreprise.id})}}"> {{stage.entreprise.nom}} </a></td>
+      <td><a href="{{path('prostages_stagesParEntreprise', {nomEntreprise:stage.entreprise.nom})}}"> {{stage.entreprise.nom}} </a></td>
       <td>{{stage.email}}</td>
     </tr>
   </tbody>
