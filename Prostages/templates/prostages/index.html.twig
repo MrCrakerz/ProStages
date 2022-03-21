@@ -18,11 +18,11 @@
     <tr>
       <!-- Contenu des colonnes -->
       <td><a href="{{path('prostages_stages', {id:stage.id})}}"> {{stage.titre}} </a></td>
-      <td><a href="{{path('prostages_stagesParE', {id:stage.entreprise.id})}}">{{stage.entreprise.nom}}</a></td>
+      <td><a href="{{path('prostages_stagesParEntreprise', {nomEntreprise:stage.entreprise.nom})}}">{{stage.entreprise.nom}}</a></td>
       <td>
             <!-- Boucle pour afficher toutes les formations concernées par le stage  -->
             {% for formation in stage.getFormations %}
-            <a href="{{path('prostages_stagesParF', {id:formation.id})}}">{{formation.Libelle}} / </a> 
+            <a href="{{path('prostages_stagesParFormation', {nomFormation:formation.libelle})}}">{{formation.Libelle}} / </a> 
             {% endfor %}
       </td>
     </tr>

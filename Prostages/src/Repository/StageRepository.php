@@ -47,4 +47,39 @@ class StageRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function findByFormation($nom): ?Stage
+    {
+        $requete = $this->getEntityManager()->createQuery("SELECT s,f
+        from App\Entity\Stage s
+        JOIN s.formations f
+         WHERE f.libelle = :nom"
+        );
+        $requete->setParameter('nom',$nom);
+        return $requete->execute();
+    }
+    
+    public function findByEntreprise ( $entreprise)
+    {
+        return $this -> createQueryBuilder ('s')
+                    ->join('s. entreprise ','e')
+                    ->where ('e. nom = :nomEntreprise')
+                    -> setParameter ('nomEntreprise', $entreprise )
+                    -> getQuery ()
+                    -> getResult ();
+    }
+
+    public function 
+    RecupererTousLesStages()
+    {
+        $requete = $this->getEntityManager()->createQuery("SELECT s,f,e
+        from App\Entity\Stage s
+        JOIN s.formations f
+        JOIN s.entreprise e"
+        );
+        return $requete->execute();
+    }
+
+
 }

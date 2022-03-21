@@ -20,7 +20,7 @@ class ProstagesController extends AbstractController
     public function index(StageRepository $stageRepository): Response
     {
 		//Affichage de la page principale du site
-		$stages=$stageRepository->findAll();
+		$stages=$stageRepository->RecupererTousLesStages();
         return $this->render('prostages/index.html.twig',['stages'=>$stages]);
     }
 
@@ -57,20 +57,43 @@ class ProstagesController extends AbstractController
 	 /**
 	 * @Route ("/stages/entreprise/{id}" , name ="prostages_stagesParE")
 	 */
-	public function triParEntreprise ($id, EntrepriseRepository $entrepriseRepository) : Response
-	{
-		//Affichage de la page listant les stages proposés par une certaine entreprise donnée
-	  	$entreprise = $entrepriseRepository->find($id);
-		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$entreprise->getStages(),]);
-	}
+	// public function triParEntreprise ($id, EntrepriseRepository $entrepriseRepository) : Response
+	// {
+	// 	//Affichage de la page listant les stages proposés par une certaine entreprise donnée
+	//   	$entreprise = $entrepriseRepository->find($id);
+	// 	return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$entreprise->getStages(),]);
+	// }
 
 	 /**
 	 * @Route ("/stages/formation/{id}" , name ="prostages_stagesParF")
 	 */
-	public function triParFormation ($id, FormationRepository $formationRepository) : Response
+	// public function triParFormation ($id, FormationRepository $formationRepository) : Response
+	// {
+	// 	//Affichage de la page listant les stages concernés par une certaine formation donnée
+	//   	$formation = $formationRepository->find($id);
+	// 	return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$formation->getStages(),]);
+	// }
+
+	 /**
+	 * @Route ("/stages/entreprise/{nomEntreprise}" , name ="prostages_stagesParEntreprise")
+	 */
+
+	public function afficherStagesParEntreprise ($nomEntreprise,StageRepository $stageRepository  ) : Response
 	{
-		//Affichage de la page listant les stages concernés par une certaine formation donnée
-	  	$formation = $formationRepository->find($id);
-		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$formation->getStages(),]);
+	   //Affichage de la page mettant en évidence les détails d'un stage donné
+	   $stage = $stageRepository->findByEntreprise($nomEntreprise);
+		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$stage,]);
+	}
+
+	/**
+	 * @Route ("/stages/formation/{nomFormation}" , name ="prostages_stagesParFormation")
+	 */
+
+	public function afficherStagesParFormation ($nomFormation,StageRepository $stageRepository  ) : Response
+	{
+	   //Affichage de la page mettant en évidence les détails d'un stage donné
+	   $stage = $stageRepository->findByFormation($nomFormation);
+		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$stage,]);
 	}
 }
+ 
