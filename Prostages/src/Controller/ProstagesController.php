@@ -11,6 +11,12 @@ use App\Repository\StageRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\FormationRepository;
 use App\Entity\Formation;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Request ;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType ;
+ use Symfony\Component\Form\Extension\Core\Type\TextType ;
+ use Symfony\Component\Form\Extension\Core\Type\UrlType ;
+ use Doctrine\ORM\EntityManagerInterface;
 class ProstagesController extends AbstractController
 
 {
@@ -94,6 +100,38 @@ class ProstagesController extends AbstractController
 	   //Affichage de la page mettant en évidence les détails d'un stage donné
 	   $stage = $stageRepository->findByFormation($nomFormation);
 		return $this->render('prostages/stagesParEntreprise.html.twig',['stages'=>$stage,]);
+	}
+
+	/**
+	 * @Route ("/entreprise/ajouter" , name ="prostages_add_entreprise")
+	 */
+	public function ajouterEntreprise (Request $requete, EntityManagerInterface $manager)
+	{
+	// Création d'une ressource initialement vierge
+	$entreprise = new Entreprise ();
+
+	// création d'un objet formulaire pour ajouter une ressource
+	$formulaireEntreprise = $this -> createFormBuilder ( $entreprise )
+	-> add ('nom', TextType::class)
+	-> add ('activite', TextType::class)
+	-> add ('adresse', TextType::class)
+	-> add ('site', UrlType::class)
+	-> getForm ();
+	$formulaireEntreprise -> handleRequest ( $requete );
+	if($formulaireEntreprise->isSubmitted())
+	{
+	// Enregistrer la date d'ajout de la ressource
+	$entreprise -> setDateAjout (new \DateTime ());
+	// Enregistrer la ressource en BD
+	$manager -> persist ($entreprise);
+	$manager -> flush ();
+	// Rediriger l' utilisateur vers la page affichant la liste des ressources
+	return $this -> redirectToRoute ('prostages_accueil');
+
+	}
+	// Afficher la page d'ajout d'une entreprise
+	return $this -> render ('prostages/ajoutEntreprise.html.twig ',
+	['vueFormulaireEntreprise' => $formulaireEntreprise -> createView ()]);
 	}
 }
  
