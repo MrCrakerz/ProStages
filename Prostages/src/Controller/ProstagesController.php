@@ -7,10 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Stage;
 use App\Entity\Entreprise;
+use App\Form\FormationType;
 use App\Repository\StageRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\FormationRepository;
 use App\Entity\Formation;
+use App\Form\EntrepriseType;
+use App\Form\StageType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request ;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType ;
@@ -110,14 +113,9 @@ class ProstagesController extends AbstractController
 	// Création d'une ressource initialement vierge
 	$entreprise = new Entreprise ();
 
-	// création d'un objet formulaire pour ajouter une ressource
-	$formulaireEntreprise = $this -> createFormBuilder ( $entreprise )
-	-> add ('nom')
-	-> add ('activite')
-	-> add ('adresse')
-	-> add ('site')
-	-> getForm ();
+	$formulaireEntreprise = $this -> createForm ( EntrepriseType::class,$entreprise );
 	$formulaireEntreprise -> handleRequest ( $requete);
+
 	if($formulaireEntreprise->isSubmitted() && $formulaireEntreprise->isValid())
 	{
 	// Enregistrer la ressource en BD
@@ -138,27 +136,68 @@ class ProstagesController extends AbstractController
 	public function modifierEntreprise (Request $requete, EntityManagerInterface $manager, Entreprise $entreprise)
 		{
 
-		// création d'un objet formulaire pour ajouter une ressource
-		$formulaireEntrepriseModif = $this -> createFormBuilder ( $entreprise )
-				-> add ('nom', TextType::class)
-				-> add ('activite', TextType::class)
-				-> add ('adresse', TextType::class)
-				-> add ('site', UrlType::class)
-				-> getForm ();
+		$formulaireEntreprise = $this -> createForm (EntrepriseType::class,$entreprise );
+		$formulaireEntreprise -> handleRequest ( $requete);
 
-		$formulaireEntrepriseModif -> handleRequest ( $requete );
-
-		if($formulaireEntrepriseModif->isSubmitted() && $formulaireEntrepriseModif->isValid())
+		if($formulaireEntreprise->isSubmitted() && $formulaireEntreprise->isValid())
 		{
-			// Enregistrer la ressource en BD
-			$manager -> persist ($entreprise);
-			$manager -> flush ();
-			// Rediriger l' utilisateur vers la page affichant la liste des ressources
-			return $this -> redirectToRoute ('prostages_accueil');
+		// Enregistrer la ressource en BD
+		$manager -> persist ($entreprise);
+		$manager -> flush ();
+		// Rediriger l' utilisateur vers la page affichant la liste des ressources
+		return $this -> redirectToRoute ('prostages_accueil');
 
 		}
 		// Afficher la page d'ajout d'une entreprise
-		return $this -> render ('prostages/modifierEntreprise.html.twig ',
-		['vueFormulaireEntrepriseModif' => $formulaireEntrepriseModif -> createView ()]);
+		return $this -> render ('prostages/ajoutEntreprise.html.twig ',
+		['vueFormulaireEntreprise' => $formulaireEntreprise -> createView ()]);
 		}
+	/**
+	 * @Route ("/stage/ajouter" , name ="prostages_add_stage")
+	 */
+	public function ajouterStage (Request $requete, EntityManagerInterface $manager)
+	{
+	// Création d'une ressource initialement vierge
+	$stage = new Stage ();
+
+	$formulaireStage = $this -> createForm ( StageType::class,$stage );
+	$formulaireStage -> handleRequest ( $requete);
+
+	if($formulaireStage->isSubmitted() && $formulaireStage->isValid())
+	{
+	// Enregistrer la ressource en BD
+	$manager -> persist ($stage);
+	$manager -> flush ();
+	// Rediriger l' utilisateur vers la page affichant la liste des ressources
+	return $this -> redirectToRoute ('prostages_accueil');
+
+	}
+	// Afficher la page d'ajout d'une entreprise
+	return $this -> render ('prostages/ajoutStage.html.twig ',
+	['vueFormulaireStage' => $formulaireStage -> createView ()]);
+	}
+
+	/**
+	 * @Route ("/stage/modifier/{id}" , name ="prostages_modify_stage")
+	 */
+	public function modifierStage (Request $requete, EntityManagerInterface $manager, Stage $stage)
+		{
+
+		$formulaireStage = $this -> createForm (StageType::class,$stage );
+		$formulaireStage -> handleRequest ( $requete);
+
+		if($formulaireStage->isSubmitted() && $formulaireStage->isValid())
+		{
+		// Enregistrer la ressource en BD
+		$manager -> persist ($stage);
+		$manager -> flush ();
+		// Rediriger l' utilisateur vers la page affichant la liste des ressources
+		return $this -> redirectToRoute ('prostages_accueil');
+
+		}
+		// Afficher la page d'ajout d'une entreprise
+		return $this -> render ('prostages/ajoutStage.html.twig ',
+		['vueFormulaireStage' => $formulaireStage -> createView ()]);
+		}
+
 }
