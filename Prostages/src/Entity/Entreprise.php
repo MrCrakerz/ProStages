@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert ;
 use App\Repository\EntrepriseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,26 +22,53 @@ class Entreprise
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message =" Le titre doit être renseigné .")
      */
     private $activite;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *  message = "L'adresse de l'entreprise doit être renseignée"
+     * ) 
+     *
+     * @Assert\Regex(
+     *  pattern = "#^[1-999]( ?bis)?#",
+     *  message =  "Le numéro de route/voie semble incorrect"
+     * )
+     * 
+     * @Assert\Regex(
+     *  pattern = "#route|rue|boulevard|avenue|impasse|voie|allée|place#i",
+     *  message = "le type de route/voie semble incorrect"
+     * )
+     * 
+     * @Assert\Regex(
+     *  pattern = "#[0-9]{5}#",
+     *  message = "Le code postal semble erroné"
+     * )
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=25)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Le nom de l'entreprise saisie doit faire au minimum {{ limit }} caractères."
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Url( message =" Ce champ doit contenir un Url .")
+
+     * )
      */
     private $site;
 
     /**
      * @ORM\OneToMany(targetEntity=Stage::class, mappedBy="entreprise")
+    
      */
     private $stages;
 

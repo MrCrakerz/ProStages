@@ -112,13 +112,13 @@ class ProstagesController extends AbstractController
 
 	// création d'un objet formulaire pour ajouter une ressource
 	$formulaireEntreprise = $this -> createFormBuilder ( $entreprise )
-	-> add ('nom', TextType::class)
-	-> add ('activite', TextType::class)
-	-> add ('adresse', TextType::class)
-	-> add ('site', UrlType::class)
+	-> add ('nom')
+	-> add ('activite')
+	-> add ('adresse')
+	-> add ('site')
 	-> getForm ();
-	$formulaireEntreprise -> handleRequest ( $requete );
-	if($formulaireEntreprise->isSubmitted())
+	$formulaireEntreprise -> handleRequest ( $requete);
+	if($formulaireEntreprise->isSubmitted() && $formulaireEntreprise->isValid())
 	{
 	// Enregistrer la ressource en BD
 	$manager -> persist ($entreprise);
@@ -148,7 +148,7 @@ class ProstagesController extends AbstractController
 
 		$formulaireEntrepriseModif -> handleRequest ( $requete );
 
-		if($formulaireEntrepriseModif->isSubmitted())
+		if($formulaireEntrepriseModif->isSubmitted() && $formulaireEntrepriseModif->isValid())
 		{
 			// Enregistrer la ressource en BD
 			$manager -> persist ($entreprise);
