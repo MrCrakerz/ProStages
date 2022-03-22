@@ -17,10 +17,11 @@
     {% for entreprise in entreprises %}
     <tr>
       <!-- Contenu des colonnes -->
-      <td><a href="{{path('prostages_stagesParE', {id:entreprise.id})}}"> {{entreprise.nom}} </a></td>
+      <td><a href="{{path('prostages_stagesParEntreprise', {nomEntreprise:entreprise.nom})}}"> {{entreprise.nom}} </a></td>
       <td>{{entreprise.activite}}</td>
       <td>{{entreprise.adresse}}</td>
       <td><a href="{{entreprise.site}}">{{entreprise.site}}</a></td>
+      <td><a href="{{path('prostages_modify_entreprise', {id:entreprise.id})}}">Modifier</a></td>
     </tr>
     {% endfor %}
   </tbody>

@@ -105,7 +105,7 @@ class ProstagesController extends AbstractController
 	/**
 	 * @Route ("/entreprise/ajouter" , name ="prostages_add_entreprise")
 	 */
-	public function ajouterEntreprise (Request $requete, EntityManagerInterface $manager)
+	public function ajouterEntreprise (Request $requete, EntityManagerInterface $manager, )
 	{
 	// Création d'une ressource initialement vierge
 	$entreprise = new Entreprise ();
@@ -120,8 +120,6 @@ class ProstagesController extends AbstractController
 	$formulaireEntreprise -> handleRequest ( $requete );
 	if($formulaireEntreprise->isSubmitted())
 	{
-	// Enregistrer la date d'ajout de la ressource
-	$entreprise -> setDateAjout (new \DateTime ());
 	// Enregistrer la ressource en BD
 	$manager -> persist ($entreprise);
 	$manager -> flush ();
@@ -133,5 +131,41 @@ class ProstagesController extends AbstractController
 	return $this -> render ('prostages/ajoutEntreprise.html.twig ',
 	['vueFormulaireEntreprise' => $formulaireEntreprise -> createView ()]);
 	}
+
+	/**
+	 * @Route ("/entreprise/modifier/{id}" , name ="prostages_modify_entreprise")
+	 */
+	public function modifierEntreprise (Request $requete, EntityManagerInterface $manager, $id, EntrepriseRepository $entrepriseRepository)
+		{
+		// Création d'une ressource initialement vierge
+		$entreprise = new Entreprise;
+		$ent = $entrepriseRepository->find($id);
+		$entreprise->setNom($ent->getNom());
+		$entreprise->setAdresse($ent->getAdresse());
+		$entreprise->setActivite($ent->getActivite());
+		$entreprise->setSite($ent->getSite());
+		//mise en place des valeurs par défaut
+		
+
+		// création d'un objet formulaire pour ajouter une ressource
+		$formulaireEntrepriseModif = $this -> createFormBuilder ( $entreprise )
+		-> add ('nom', TextType::class)
+		-> add ('activite', TextType::class)
+		-> add ('adresse', TextType::class)
+		-> add ('site', UrlType::class)
+		-> getForm ();
+		$formulaireEntrepriseModif -> handleRequest ( $requete );
+		if($formulaireEntrepriseModif->isSubmitted())
+		{
+			// Enregistrer la ressource en BD
+			$manager -> persist ($entreprise);
+			$manager -> flush ();
+			// Rediriger l' utilisateur vers la page affichant la liste des ressources
+			return $this -> redirectToRoute ('prostages_accueil');
+
+		}
+		// Afficher la page d'ajout d'une entreprise
+		return $this -> render ('prostages/modifierEntreprise.html.twig ',
+		['vueFormulaireEntrepriseModif' => $formulaireEntrepriseModif -> createView ()]);
+		}
 }
- 
