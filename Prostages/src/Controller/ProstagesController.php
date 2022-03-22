@@ -135,26 +135,19 @@ class ProstagesController extends AbstractController
 	/**
 	 * @Route ("/entreprise/modifier/{id}" , name ="prostages_modify_entreprise")
 	 */
-	public function modifierEntreprise (Request $requete, EntityManagerInterface $manager, $id, EntrepriseRepository $entrepriseRepository)
+	public function modifierEntreprise (Request $requete, EntityManagerInterface $manager, Entreprise $entreprise)
 		{
-		// Création d'une ressource initialement vierge
-		$entreprise = new Entreprise;
-		$ent = $entrepriseRepository->find($id);
-		$entreprise->setNom($ent->getNom());
-		$entreprise->setAdresse($ent->getAdresse());
-		$entreprise->setActivite($ent->getActivite());
-		$entreprise->setSite($ent->getSite());
-		//mise en place des valeurs par défaut
-		
 
 		// création d'un objet formulaire pour ajouter une ressource
 		$formulaireEntrepriseModif = $this -> createFormBuilder ( $entreprise )
-		-> add ('nom', TextType::class)
-		-> add ('activite', TextType::class)
-		-> add ('adresse', TextType::class)
-		-> add ('site', UrlType::class)
-		-> getForm ();
+				-> add ('nom', TextType::class)
+				-> add ('activite', TextType::class)
+				-> add ('adresse', TextType::class)
+				-> add ('site', UrlType::class)
+				-> getForm ();
+
 		$formulaireEntrepriseModif -> handleRequest ( $requete );
+
 		if($formulaireEntrepriseModif->isSubmitted())
 		{
 			// Enregistrer la ressource en BD
