@@ -106,7 +106,7 @@ class ProstagesController extends AbstractController
 	}
 
 	/**
-	 * @Route ("/entreprise/ajouter" , name ="prostages_add_entreprise")
+	 * @Route ("/admin/entreprise/ajouter" , name ="prostages_add_entreprise")
 	 */
 	public function ajouterEntreprise (Request $requete, EntityManagerInterface $manager, )
 	{
@@ -131,7 +131,7 @@ class ProstagesController extends AbstractController
 	}
 
 	/**
-	 * @Route ("/entreprise/modifier/{id}" , name ="prostages_modify_entreprise")
+	 * @Route ("/admin/entreprise/modifier/{id}" , name ="prostages_modify_entreprise")
 	 */
 	public function modifierEntreprise (Request $requete, EntityManagerInterface $manager, Entreprise $entreprise)
 		{
