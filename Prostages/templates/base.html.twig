@@ -32,11 +32,15 @@
 				</div>
         	<div class="col-md-2">
 				<!-- Texte avec lien redirigeant vers la page listant les entreprises -->
+				{% if is_granted("ROLE_ADMIN") %}
 				<a href="{{path('prostages_add_entreprise')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Ajout d'Entreprises</a>
+				{% endif %}
 				</div>
 				<div class="col-md-2">
 				<!-- texte avec lien redirigeant vers la page listant les formations -->
+				{% if is_granted("ROLE_USER") %}
 				<a href="{{path('prostages_add_stage')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Ajout de Stages</a>
+				{% endif %}
 				</div>
 				<div class="col-md-2">
 				<!-- texte avec lien redirigeant vers la page listant les formations -->
@@ -54,6 +58,7 @@
 				<a class ="btn btn-secondary btn-lg active" href="{{path('app_login')}}">
 				Connexion</a>
 				{% endif %}
+				
 				
 				</div>
 			</div>

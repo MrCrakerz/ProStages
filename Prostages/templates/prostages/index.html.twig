@@ -24,8 +24,11 @@
             {% for formation in stage.getFormations %}
             <a href="{{path('prostages_stagesParFormation', {nomFormation:formation.libelle})}}">{{formation.Libelle}} / </a> 
             {% endfor %}
+       {% if is_granted("ROLE_USER") %}
+				<td>  <a href="{{path('prostages_modify_stage',{id:stage.id})}}" >Modifier</a>
+				    {% endif %}
       </td>
-    </tr>
+    </tr> 
     {% endfor %}
   </tbody>
 </table>

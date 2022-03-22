@@ -21,7 +21,9 @@
       <td>{{entreprise.activite}}</td>
       <td>{{entreprise.adresse}}</td>
       <td><a href="{{entreprise.site}}">{{entreprise.site}}</a></td>
+      {% if is_granted("ROLE_ADMIN") %}
       <td><a href="{{path('prostages_modify_entreprise', {id:entreprise.id})}}">Modifier</a></td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>
