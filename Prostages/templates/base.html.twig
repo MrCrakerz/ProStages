@@ -30,46 +30,62 @@
 				<!-- Texte avec lien redirigeant vers la page listant les entreprises -->
 				<a href="{{path('prostages_entreprises')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Trier par Entreprise</a>
 				</div>
-        	<div class="col-md-2">
+        	
 				<!-- Texte avec lien redirigeant vers la page listant les entreprises -->
 				{% if is_granted("ROLE_ADMIN") %}
+				<div class="col-md-2">
 				<a href="{{path('prostages_add_entreprise')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Ajout d'Entreprises</a>
-				{% endif %}
 				</div>
-				<div class="col-md-2">
+				{% endif %}
+				
 				<!-- texte avec lien redirigeant vers la page listant les formations -->
 				{% if is_granted("ROLE_USER") %}
+				<div class="col-md-2">
 				<a href="{{path('prostages_add_stage')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Ajout de Stages</a>
+				</div>
 				{% endif %}
-				</div>
 				<div class="col-md-2">
 				<!-- texte avec lien redirigeant vers la page listant les formations -->
-				<a href="{{path('prostages_formations')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Trier par Formation</a>
+				<a href="{{path('formation_index')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Trier par Formation</a>
 				</div>
 				<div class="col-md-2">
-				<!-- texte avec lien redirigeant vers la page listant les formations -->
-				<a href="{{path('prostages_formations')}}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Trier par Formation</a>
-				</div>
-				<div class="col-md-2">
+				
 				{% if is_granted("ROLE_USER") %}
+				<div class="col-md-2">
 				<a class ="btn btn-secondary btn-lg active" href="{{path('app_logout')}}">
 				Déconnexion</a>
+				</div>
 				{% else %}
+				<div class="col-md-2">
 				<a class ="btn btn-secondary btn-lg active" href="{{path('app_inscription')}}">
 				S'inscrire</a>
+				</div>
+				<div class="col-md-2">
 				<a class ="btn btn-secondary btn-lg active" href="{{path('app_login')}}">
 				Connexion</a>
+				</div>
 				{% endif %}
 				
 				
-				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
-	<!-- Endroit ou le code généré par les autres pages Twig sera placé -->
-	{% block body %}
+<div class="row">
+				<div class="col-md-1">
+				</div>
+                <div class="col-md-10">
+                 <div class="example-wrapper">
+						{% block body %}
  	{% endblock %}
+
+				</div
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>	
+	<!-- Endroit ou le code généré par les autres pages Twig sera placé -->
 
 <!-- Pied de page trouvé sur bootstrap -->
 <div class="container">
