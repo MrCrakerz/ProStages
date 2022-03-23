@@ -153,7 +153,7 @@ class ProstagesController extends AbstractController
 		['vueFormulaireEntreprise' => $formulaireEntreprise -> createView ()]);
 		}
 	/**
-	 * @Route ("/stage/ajouter" , name ="prostages_add_stage")
+	 * @Route ("/profile/stage/ajouter" , name ="prostages_add_stage")
 	 */
 	public function ajouterStage (Request $requete, EntityManagerInterface $manager)
 	{
@@ -178,7 +178,7 @@ class ProstagesController extends AbstractController
 	}
 
 	/**
-	 * @Route ("/stage/modifier/{id}" , name ="prostages_modify_stage")
+	 * @Route ("/profile/stage/modifier/{id}" , name ="prostages_modify_stage")
 	 */
 	public function modifierStage (Request $requete, EntityManagerInterface $manager, Stage $stage)
 		{

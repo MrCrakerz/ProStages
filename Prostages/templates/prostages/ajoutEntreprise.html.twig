@@ -8,10 +8,10 @@
                  <div class="example-wrapper">
 					<h1>Ajout Entreprise</h1>
 					{{ form_start(vueFormulaireEntreprise, {'attr': {'novalidate' : 'novalidate'}}) }}
-					{{ form_row(vueFormulaireEntreprise.nom)}}
-					{{ form_row(vueFormulaireEntreprise.adresse)}}
-					{{ form_row(vueFormulaireEntreprise.activite)}}
-					{{ form_row(vueFormulaireEntreprise.site)}}
+					{{ form_row(vueFormulaireEntreprise.nom, {'attr':{'placeholder':"Nom de l'entreprise..."}})}}
+					{{ form_row(vueFormulaireEntreprise.adresse, {'attr':{'placeholder':"Adresse de l'entreprise ..."}})}}
+					{{ form_row(vueFormulaireEntreprise.activite, {'attr':{'placeholder':"Activite de l'entreprise ..."}})}}
+					{{ form_row(vueFormulaireEntreprise.site, {'attr':{'placeholder':"Site de l'entreprise..."}})}}
 					<button type="submit" class="btn btn-dark">Enregistrer</button>
 					<br>
 					{{ form_end(vueFormulaireEntreprise) }}
